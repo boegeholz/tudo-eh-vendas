@@ -3,9 +3,8 @@
 try {
     $conn = new PDO("sqlsrv:server = tcp:gsinfo.database.windows.net,1433; Database = tudoehvendasdb", "boegeholz", "Lucas3006*");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
-catch (PDOException $e) {
-    print("Error connecting to SQL Server.");
+} catch (PDOException $e) {
+    print ("Error connecting to SQL Server.");
     die(print_r($e));
 }
 
@@ -13,4 +12,13 @@ catch (PDOException $e) {
 $connectionInfo = array("UID" => "boegeholz", "pwd" => "Lucas3006*", "Database" => "tudoehvendasdb", "LoginTimeout" => 30, "Encrypt" => 1, "TrustServerCertificate" => 0);
 $serverName = "tcp:gsinfo.database.windows.net,1433";
 $conn = sqlsrv_connect($serverName, $connectionInfo);
+$tsql = "SELECT * from versao";
+$getResults = sqlsrv_query($conn, $tsql);
+echo ("Reading data from table" . PHP_EOL);
+if ($getResults == FALSE)
+    echo (sqlsrv_errors());
+while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+    echo ($row['VersionID'] . " " . $row['VersionName'] . PHP_EOL);
+}
+sqlsrv_free_stmt($getResults);
 ?>
