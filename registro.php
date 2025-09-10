@@ -4,9 +4,12 @@ include_once 'config.php';
 include_once 'navbar.php';
 
 if (empty($_SESSION['admin']) || $_SESSION['admin'] === 0) {
-        header('Location: dashboard.php');
-        exit;
-    }
+    header('Location: dashboard.php');
+    exit;
+}
+// Buscar clientes para o select
+$sql_cli = "SELECT id, nome FROM cliente WHERE inativo = 0 ORDER BY nome";
+$stmt_cli = sqlsrv_query($conn, $sql_cli);
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,11 +41,22 @@ if (empty($_SESSION['admin']) || $_SESSION['admin'] === 0) {
                 <input type="password" class="form-control" id="pass2" name="confirmar_senha" required>
             </div>
             <div class="mb-3">
+                <label class="form-label">Cliente</label>
+                <select name="cliente_id" class="form-select">
+                    <option value="">Não vinculado</option>
+                    <?php while ($cli = sqlsrv_fetch_array($stmt_cli, SQLSRV_FETCH_ASSOC)): ?>
+                        <option value="<?= $cli['id'] ?>">
+                            <?= htmlspecialchars($cli['nome']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+            <div class="mb-3">
                 <input type="checkbox" class="form-check-input" id="adminCheck" name="admin">
                 <label class="form-check-label" for="adminCheck">Administrador</label>
             </div>
             <button type="submit" class="btn btn-primary">Criar Usuário</button>
-            <p class="mt-3">Já tem uma conta? <a href="login.php">Faça login aqui</a>.</p>
+            <a href="lista_usuarios.php" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 
