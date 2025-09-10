@@ -8,6 +8,7 @@ include_once 'config.php';
 $sql_cli = "SELECT id, nome FROM cliente ORDER BY nome";
 $stmt_cli = sqlsrv_query($conn, $sql_cli);
 ?>
+
 <!-- navbar.php -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">

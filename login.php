@@ -66,8 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 // Free the statement resource before redirecting
                 sqlsrv_free_stmt($stmt);
-                
-                header("Location: dashboard.php"); // redirect to dashboard after login
+                echo "<script>window.location.href = 'dashboard.php';</script>";
                 exit();
             } else {
                 // Incorrect password
